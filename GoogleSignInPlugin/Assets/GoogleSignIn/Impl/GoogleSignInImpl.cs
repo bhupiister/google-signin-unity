@@ -28,25 +28,32 @@ namespace Google.Impl {
 #endif
 
     internal GoogleSignInImpl(GoogleSignInConfiguration configuration)
-          : base(GoogleSignIn_Create(GetPlayerActivity())) {
-
-      if (configuration != null) {
-        List<string> scopes = new List<string>();
-        if (configuration.AdditionalScopes != null) {
-          scopes.AddRange(configuration.AdditionalScopes);
+                : base(GoogleSignIn_Create(GetPlayerActivity()))
+        {
+            Configure(configuration);
         }
-        GoogleSignIn_Configure(SelfPtr(), configuration.UseGameSignIn,
-                     configuration.WebClientId,
-                     configuration.RequestAuthCode,
-                     configuration.ForceTokenRefresh,
-                     configuration.RequestEmail,
-                     configuration.RequestIdToken,
-                     configuration.HidePopups,
-                     scopes.ToArray(),
-                     scopes.Count,
-                     configuration.AccountName);
-      }
-    }
+
+        public void Configure(GoogleSignInConfiguration configuration)
+        {
+            if (configuration != null)
+            {
+                List<string> scopes = new List<string>();
+                if (configuration.AdditionalScopes != null)
+                {
+                    scopes.AddRange(configuration.AdditionalScopes);
+                }
+                GoogleSignIn_Configure(SelfPtr(), configuration.UseGameSignIn,
+                                configuration.WebClientId,
+                                configuration.RequestAuthCode,
+                                configuration.ForceTokenRefresh,
+                                configuration.RequestEmail,
+                                configuration.RequestIdToken,
+                                configuration.HidePopups,
+                                scopes.ToArray(),
+                                scopes.Count,
+                                configuration.AccountName);
+            }
+        }
 
     /// <summary>Enables/Disables verbose logging to help troubleshooting</summary>
     public void EnableDebugLogging(bool flag) {
