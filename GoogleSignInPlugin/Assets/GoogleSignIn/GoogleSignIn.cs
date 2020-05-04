@@ -67,6 +67,12 @@ namespace Google {
       set {
         // Can set the configuration until the singleton is created.
         if (theInstance == null || theConfiguration == value || theConfiguration == null) {
+          if (theInstance != null && theConfiguration == null)
+              {
+                  //From sign out, Instance stays non-null but theConfiguration is null.
+                  //Needs configuration refresh.
+                  theInstance.impl.Configure(value);
+              }
           theConfiguration = value;
         } else {
           throw new SignInException(GoogleSignInStatusCode.DeveloperError,
@@ -198,5 +204,6 @@ namespace Google {
     void EnableDebugLogging(bool flag);
     void SignOut();
     void Disconnect();
+    void Configure(GoogleSignInConfiguration configuration);
   }
 }  // namespace Google
